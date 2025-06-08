@@ -1,6 +1,14 @@
 {
     "name": "pekhota/nova-scroll-buttons",
     "description": "Laravel Nova package providing global floating scroll-to-top and scroll-to-bottom buttons for faster navigation.",
+    "homepage": "https://github.com/pekhota/nova-scroll-buttons",
+    "authors": [
+        {
+            "name": "Oleksandr Piekhota",
+            "email": "pekhota.alex@gmail.com",
+            "homepage": "https://github.com/pekhota"
+        }
+    ],
     "keywords": [
         "laravel",
         "nova",
