@@ -22,6 +22,12 @@ Adds always-visible scroll-to-top and scroll-to-bottom buttons to every Laravel 
 
 ---
 
+## Dependencies
+
+- **Laravel Nova**: ^5.0
+- **PHP**: ^8.1
+- **Laravel Framework**: ^10.0, ^11.0, or ^12.0
+
 ## Installation
 
 Run this command in your project folder:
