@@ -2,8 +2,8 @@
 
 Adds always-visible scroll-to-top and scroll-to-bottom buttons to every Laravel Nova page.
 
-[![Packagist](https://img.shields.io/packagist/v/pekhota/nova-scroll-buttons?style=flat-square)](https://packagist.org/packages/pekhota/nova-scroll-buttons)  
-[![GitHub license](https://img.shields.io/github/license/pekhota/nova-scroll-buttons?style=flat-square)](LICENSE)
+[![Packagist](https://img.shields.io/packagist/v/pekhota/nova-scroll-buttons)](https://packagist.org/packages/pekhota/nova-scroll-buttons)  
+[![GitHub license](https://img.shields.io/github/license/pekhota/nova-scroll-buttons)](LICENSE)
 
 ---
 
