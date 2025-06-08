@@ -2,7 +2,7 @@
     <div class="global-scroll-buttons">
         <!-- Scroll to Top -->
         <button
-            v-if="!atTop"
+            v-if="isScrollable && !atTop"
             class="btn-floating"
             @click="scrollToTop"
             aria-label="Scroll to top"
@@ -20,7 +20,7 @@
 
         <!-- Scroll to Bottom -->
         <button
-            v-if="!atBottom"
+            v-if="isScrollable && !atBottom"
             class="btn-floating"
             @click="scrollToBottom"
             aria-label="Scroll to bottom"
@@ -39,13 +39,14 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 
 export default {
     name: 'FloatingScrollButtons',
     setup() {
         const atTop = ref(true)
         const atBottom = ref(false)
+        const isScrollable = ref(false)
 
         const checkScroll = () => {
             const scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -56,8 +57,9 @@ export default {
                 document.body.clientHeight, document.documentElement.clientHeight
             )
 
+            isScrollable.value = docHeight > windowHeight
             atTop.value = scrollTop <= 0
-            atBottom.value = scrollTop + windowHeight >= docHeight - 2
+            atBottom.value = scrollTop + windowHeight >= docHeight - 1 // 1px fudge for rounding errors
         }
 
         const scrollToTop = () => {
@@ -78,7 +80,9 @@ export default {
 
         onMounted(() => {
             window.addEventListener('scroll', checkScroll, { passive: true })
-            checkScroll() // initialize on mount
+            nextTick(() => {
+                setTimeout(checkScroll, 200)
+            })
         })
 
         onBeforeUnmount(() => {
@@ -88,6 +92,7 @@ export default {
         return {
             atTop,
             atBottom,
+            isScrollable,
             scrollToTop,
             scrollToBottom,
         }
