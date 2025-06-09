@@ -80,8 +80,11 @@ export default {
 
         onMounted(() => {
             window.addEventListener('scroll', checkScroll, { passive: true })
+
             nextTick(() => {
-                setTimeout(checkScroll, 200)
+                requestAnimationFrame(() => {
+                    checkScroll()
+                })
             })
         })
 
