@@ -84,7 +84,6 @@ export default {
 
         onBeforeUnmount(() => {
             window.removeEventListener('scroll', updateButtons);
-            window.removeEventListener('resize', updateButtons);
             resizeObserver.disconnect();
 
         })
