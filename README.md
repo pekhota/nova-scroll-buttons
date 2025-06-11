@@ -74,3 +74,8 @@ This package is open-sourced software licensed under the MIT license.
 
 Inspired by the need for quick navigation in complex Nova dashboards.  
 Built by [@pekhota](https://github.com/pekhota).
+
+## Acknowledgements
+
+Special thanks to [Oleh Cherbaiev](https://www.linkedin.com/in/oleg-cherbaiev-1b6485220/) for valuable help
+improving the component.

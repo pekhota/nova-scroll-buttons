@@ -1,65 +1,61 @@
 <template>
-    <div class="global-scroll-buttons">
-        <!-- Scroll to Top -->
-        <button
-            v-if="isScrollable && !atTop"
-            class="btn-floating"
-            @click="scrollToTop"
-            aria-label="Scroll to top"
-            title="Scroll to top"
-        >
-            <svg
-                class="arrow-icon arrow-icon-top"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
+    <Teleport to="body">
+        <div class="global-scroll-buttons">
+            <!-- Scroll to Top -->
+            <button
+                v-if="canScrollUp"
+                class="btn-floating"
+                @click="scrollToTop"
+                aria-label="Scroll to top"
+                title="Scroll to top"
             >
-                <path d="M12 9L6 15H18L12 9Z" />
-            </svg>
-        </button>
+                <svg
+                    class="arrow-icon arrow-icon-top"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M12 9L6 15H18L12 9Z"/>
+                </svg>
+            </button>
 
-        <!-- Scroll to Bottom -->
-        <button
-            v-if="isScrollable && !atBottom"
-            class="btn-floating"
-            @click="scrollToBottom"
-            aria-label="Scroll to bottom"
-            title="Scroll to bottom"
-        >
-            <svg
-                class="arrow-icon arrow-icon-bottom"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
+            <!-- Scroll to Bottom -->
+            <button
+                v-if="canScrollDown"
+                class="btn-floating"
+                @click="scrollToBottom"
+                aria-label="Scroll to bottom"
+                title="Scroll to bottom"
             >
-                <path d="M12 15L6 9H18L12 15Z" />
-            </svg>
-        </button>
-    </div>
+                <svg
+                    class="arrow-icon arrow-icon-bottom"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M12 15L6 9H18L12 15Z"/>
+                </svg>
+            </button>
+        </div>
+    </Teleport>
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import {onBeforeUnmount, onMounted, ref} from 'vue'
+
+const canScrollUp = ref(false);
+const canScrollDown = ref(false);
+let resizeObserver;
 
 export default {
     name: 'FloatingScrollButtons',
     setup() {
-        const atTop = ref(true)
-        const atBottom = ref(false)
-        const isScrollable = ref(false)
+        const updateButtons = () => {
+            const scrollY = window.scrollY || document.documentElement.scrollTop;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
-        const checkScroll = () => {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop
-            const windowHeight = window.innerHeight || document.documentElement.clientHeight
-            const docHeight = Math.max(
-                document.body.scrollHeight, document.documentElement.scrollHeight,
-                document.body.offsetHeight, document.documentElement.offsetHeight,
-                document.body.clientHeight, document.documentElement.clientHeight
-            )
-
-            isScrollable.value = docHeight > windowHeight
-            atTop.value = scrollTop <= 0
-            atBottom.value = scrollTop + windowHeight >= docHeight - 1 // 1px fudge for rounding errors
+            canScrollUp.value = scrollY > 0;
+            canScrollDown.value = Math.ceil(scrollY) < maxScroll;
         }
 
         const scrollToTop = () => {
@@ -79,25 +75,25 @@ export default {
         }
 
         onMounted(() => {
-            window.addEventListener('scroll', checkScroll, { passive: true })
+            window.addEventListener('scroll', updateButtons, {passive: true})
 
-            nextTick(() => {
-                requestAnimationFrame(() => {
-                    checkScroll()
-                })
-            })
+            resizeObserver = new ResizeObserver(updateButtons);
+            resizeObserver.observe(document.documentElement);
+            resizeObserver.observe(document.body);
         })
 
         onBeforeUnmount(() => {
-            window.removeEventListener('scroll', checkScroll)
+            window.removeEventListener('scroll', updateButtons);
+            window.removeEventListener('resize', updateButtons);
+            resizeObserver.disconnect();
+
         })
 
         return {
-            atTop,
-            atBottom,
-            isScrollable,
-            scrollToTop,
-            scrollToBottom,
+            scrollToTop: scrollToTop,
+            scrollToBottom: scrollToBottom,
+            canScrollUp: canScrollUp,
+            canScrollDown: canScrollDown
         }
     },
 }
@@ -116,13 +112,13 @@ export default {
 }
 
 .btn-floating {
-    display: inline-flex;          /* Use flex to center the icon */
+    display: inline-flex; /* Use flex to center the icon */
     align-items: center;
     justify-content: center;
     background: #444;
-    color: #fff;                   /* Icon inherits this color (fill="currentColor") */
+    color: #fff; /* Icon inherits this color (fill="currentColor") */
     border-radius: 50%;
-    width: 2.5rem;                 /* Circle dimension */
+    width: 2.5rem; /* Circle dimension */
     height: 2.5rem;
     cursor: pointer;
     border: none;
@@ -142,7 +138,7 @@ export default {
 .arrow-icon {
     width: 1.25rem;
     height: 1.25rem;
-    display: block;   /* removes default inline SVG spacing */
+    display: block; /* removes default inline SVG spacing */
 }
 
 .arrow-icon-top {
