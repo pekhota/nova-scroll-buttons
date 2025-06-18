@@ -16,9 +16,12 @@ Adds always-visible scroll-to-top and scroll-to-bottom buttons to every Laravel 
 
 ---
 
-## Screenshot
+## Demo
 
-![Nova Scroll Buttons Demo](./screenshot.png)
+![Scroll buttons demo](./art/demo-dark.gif)
+
+
+![Screenshot](./art/screenshot.png)
 
 ---
 
