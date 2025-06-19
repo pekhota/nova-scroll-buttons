@@ -1,5 +1,7 @@
 # Nova Scroll Buttons
 
+![Hero](./art/hero.webp)
+
 Adds always-visible scroll-to-top and scroll-to-bottom buttons to every Laravel Nova page.
 
 [![Packagist](https://img.shields.io/packagist/v/pekhota/nova-scroll-buttons)](https://packagist.org/packages/pekhota/nova-scroll-buttons)  
